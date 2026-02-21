@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ExpenseManager.Services</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpenseManager.Common\ExpenseManager.Common.csproj" />
+    <ProjectReference Include="..\ExpenseManagerDBModels\ExpenseManager.DBModels.csproj" />
+  </ItemGroup>
+
+</Project>
