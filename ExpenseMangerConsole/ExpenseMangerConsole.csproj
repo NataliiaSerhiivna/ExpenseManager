@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ExpenseManger.ConsoleApp</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpenseManager.Services\ExpenseManager.Services.csproj" />
+    <ProjectReference Include="..\ExpenseManager.UIModels\ExpenseManager.UIModels.csproj" />
+    <ProjectReference Include="..\ExpenseManagerDBModels\ExpenseManager.DBModels.csproj" />
+  </ItemGroup>
+
+</Project>
