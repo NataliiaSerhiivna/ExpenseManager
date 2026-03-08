@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ExpenseManager.UIModels;assembly=ExpenseManager.UIModels"
+             x:Class="ExpenseManager.Pages.WalletDetailsPage"
+             x:DataType="models:WalletUIModel"
+             Title="Wallet Details">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Border
+            Stroke="#7E57C2"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 12"
+            BackgroundColor="#F3E8FF"
+            Padding="12"
+            Margin="10,10,10,0">
+
+            <VerticalStackLayout>
+                <Label
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="#2E1F5E"
+                    HorizontalOptions="Center">
+                    <MultiBinding StringFormat="{}{0} (Total: {1})">
+                        <Binding Path="Name" />
+                        <Binding Path="TotalAmount" />
+                    </MultiBinding>
+                </Label>
+
+                <Label
+                    Text="{Binding Valuta, Converter={StaticResource EnumToDisplayName}}"
+                    HorizontalOptions="Center"
+                    TextColor="#4B3A78" />
+            </VerticalStackLayout>
+        </Border>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Transactions}"
+                        Margin="10"
+                        SelectionMode="Single"
+                        SelectionChanged="TransactionSelected">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TransactionUIModel">
+                    <Border
+                        Stroke="#4AA3FF"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="#EAF4FF"
+                        Padding="12"
+                        Margin="0,10">
+
+                        <VerticalStackLayout>
+                            <Label
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                TextColor="Black"
+                                HorizontalOptions="Center">
+                                <MultiBinding StringFormat="{}{0} ({1})">
+                                    <Binding Path="Description" />
+                                    <Binding Path="Amount" />
+                                </MultiBinding>
+                            </Label>
+
+                            <Label
+                                Text="{Binding Category, Converter={StaticResource EnumToDisplayName}}"
+                                HorizontalOptions="Center"
+                                TextColor="#1E3A5F" />
+                        </VerticalStackLayout>
+
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

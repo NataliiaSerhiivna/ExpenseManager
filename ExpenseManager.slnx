@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="ExpenseManager.Common/ExpenseManager.Common.csproj" />
+  <Project Path="ExpenseManager.DBModels/ExpenseManager.DBModels.csproj" />
+  <Project Path="ExpenseManager.Services/ExpenseManager.Services.csproj">
+    <BuildDependency Project="ExpenseManager.Common/ExpenseManager.Common.csproj" />
+  </Project>
+  <Project Path="ExpenseManager.UIModels/ExpenseManager.UIModels.csproj" />
+  <Project Path="ExpenseManager/ExpenseManager.csproj">
+    <BuildDependency Project="ExpenseManager.Common/ExpenseManager.Common.csproj" />
+    <BuildDependency Project="ExpenseManager.DBModels/ExpenseManager.DBModels.csproj" />
+    <BuildDependency Project="ExpenseManager.Services/ExpenseManager.Services.csproj" />
+    <BuildDependency Project="ExpenseManager.UIModels/ExpenseManager.UIModels.csproj" />
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="ExpenseManagerConsole/ExpenseManagerConsole.csproj" />
+</Solution>
