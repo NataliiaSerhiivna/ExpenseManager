@@ -15,9 +15,10 @@ namespace ExpenseManager.DBModels
         public Valuta Valuta { get; set; }
         private WalletDBModel() { }
 
-        public WalletDBModel(string name, Valuta valuta)
+        public WalletDBModel(string name, Valuta valuta): this(Guid.NewGuid(), name, valuta){}
+        public WalletDBModel(Guid id, string name, Valuta valuta)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
             Valuta = valuta;
         }

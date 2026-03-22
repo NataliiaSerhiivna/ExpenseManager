@@ -4,9 +4,12 @@
   </Folder>
   <Project Path="ExpenseManager.Common/ExpenseManager.Common.csproj" />
   <Project Path="ExpenseManager.DBModels/ExpenseManager.DBModels.csproj" />
+  <Project Path="ExpenseManager.DTOModels/ExpenseManager.DTOModels.csproj" Id="1c8f76c7-ab35-454e-9eba-25432f41715b" />
+  <Project Path="ExpenseManager.Repositories/ExpenseManager.Repositories.csproj" Id="2bdbb2cc-369f-48d9-92a1-62ce5bee8bc9" />
   <Project Path="ExpenseManager.Services/ExpenseManager.Services.csproj">
     <BuildDependency Project="ExpenseManager.Common/ExpenseManager.Common.csproj" />
   </Project>
+  <Project Path="ExpenseManager.Storage/ExpenseManager.Storage.csproj" Id="949426f6-7417-4e50-a2cf-a4c0487c5900" />
   <Project Path="ExpenseManager.UIModels/ExpenseManager.UIModels.csproj" />
   <Project Path="ExpenseManager/ExpenseManager.csproj">
     <BuildDependency Project="ExpenseManager.Common/ExpenseManager.Common.csproj" />

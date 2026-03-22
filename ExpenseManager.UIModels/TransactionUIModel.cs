@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 namespace ExpenseManager.UIModels
 {
+    [Obsolete("This class was created for testing and learning purposes. It is no longer needed and will be removed in the future.")]
     public class TransactionUIModel
     {
-        private readonly IStorageService _storage;
         private TransactionDBModel _dbModel;
         private Guid _walletId;
         private decimal _amount;

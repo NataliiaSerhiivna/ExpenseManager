@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
-		<TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
 
 		<!-- Note for MacCatalyst:
@@ -66,6 +65,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
@@ -73,7 +73,10 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\ExpenseManager.Common\ExpenseManager.Common.csproj" />
 	  <ProjectReference Include="..\ExpenseManager.DBModels\ExpenseManager.DBModels.csproj" />
+	  <ProjectReference Include="..\ExpenseManager.DTOModels\ExpenseManager.DTOModels.csproj" />
+	  <ProjectReference Include="..\ExpenseManager.Repositories\ExpenseManager.Repositories.csproj" />
 	  <ProjectReference Include="..\ExpenseManager.Services\ExpenseManager.Services.csproj" />
+	  <ProjectReference Include="..\ExpenseManager.Storage\ExpenseManager.Storage.csproj" />
 	  <ProjectReference Include="..\ExpenseManager.UIModels\ExpenseManager.UIModels.csproj" />
 	</ItemGroup>
 

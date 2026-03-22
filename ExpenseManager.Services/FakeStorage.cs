@@ -10,6 +10,7 @@ using ExpenseManager.DBModels;
 
 namespace ExpenseManager.Services
 {
+    [Obsolete("This class was created for testing and learning purposes. It is no longer needed and will be removed in the future.")]
     internal static class FakeStorage
     {
         private static readonly List<WalletDBModel> _wallet;

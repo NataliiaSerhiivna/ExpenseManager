@@ -16,12 +16,22 @@ namespace ExpenseManager.DBModels
         public decimal Amount { get; set; }
         public Category Category { get; set; }
         public string Description { get; set; }
+        // Timestamp is set only once during the creation of the object and cannot be changed later.
         public DateTime Timestamp { get; set; }
-
         private TransactionDBModel()
         {
         }
-        public TransactionDBModel(Guid walletId, decimal amount, Category category, string description, DateTime timestamp)
+        public TransactionDBModel(Guid walletId, decimal amount, Category category, string description, DateTime timestamp): this(Guid.NewGuid(), walletId, amount, category, description, timestamp){}
+        public TransactionDBModel(Guid id, Guid walletId, decimal amount, Category category, string description, DateTime timestamp)
+        {
+            Id = id;
+            WalletId = walletId;
+            Amount = amount;
+            Category = category;
+            Description = description;
+            Timestamp = timestamp;
+        }
+        /**public TransactionDBModel(Guid walletId, decimal amount, Category category, string description, DateTime timestamp)
         {
             Id = Guid.NewGuid();
             WalletId = walletId;
@@ -29,6 +39,6 @@ namespace ExpenseManager.DBModels
             Category = category;
             Description = description ?? "";
             Timestamp = timestamp;
-        }
+        }*/
     }
 }

@@ -10,7 +10,7 @@ using ExpenseManager.Services;
 
 namespace ExpenseManager.UIModels
 {
-
+    [Obsolete("This class was created for testing and learning purposes. It is no longer needed and will be removed in the future.")]
     public class WalletUIModel
     {
         private readonly IStorageService _storage;
@@ -80,7 +80,10 @@ namespace ExpenseManager.UIModels
                 _transactions.Add(new TransactionUIModel(txDb));
             }
         }
-
+        /**private decimal CalculateTotalAmount()
+        {
+            return Transactions?.Sum(t => t.Amount) ?? -1;
+        }**/
         public override string ToString()
         {
             return $"Wallet Name: {Name}, Valuta: {Valuta}, TotalAmount: {TotalAmount}";

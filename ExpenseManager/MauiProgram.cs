@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using ExpenseManager.Services;
 using ExpenseManager.Pages;
+using ExpenseManager.Storage;
+using ExpenseManager.Repositories;
+using ExpenseManager.Services;
+using ExpenseManager.ViewModels;
 
 namespace ExpenseManager
 {
@@ -9,6 +12,7 @@ namespace ExpenseManager
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -20,7 +24,16 @@ namespace ExpenseManager
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            builder.Services.AddSingleton<IStorageService, StorageServices>();
+            builder.Services.AddSingleton<IStorageContext, InMemoryStorageContext>();
+
+            builder.Services.AddSingleton<IWalletRepository, WalletRepository>();
+            builder.Services.AddSingleton<ITransactionRepository, TransactionRepository>();
+
+            builder.Services.AddSingleton<IWalletService, WalletService>();
+            builder.Services.AddSingleton<ITransactionService, TransactionService>();
+
+            builder.Services.AddTransient<WalletsViewModel>();
+            builder.Services.AddTransient<WalletDetailsViewModel>();
 
             builder.Services.AddSingleton<WalletsPage>();
             builder.Services.AddTransient<WalletDetailsPage>();
