@@ -2,11 +2,11 @@
 
 namespace ExpenseManager.Pages;
 
-public partial class WalletDetailsPage : ContentPage
+public partial class WalletEditPage : ContentPage
 {
-    private readonly WalletDetailsViewModel _viewModel;
+    private readonly WalletEditViewModel _viewModel;
 
-    public WalletDetailsPage(WalletDetailsViewModel vm)
+    public WalletEditPage(WalletEditViewModel vm)
     {
         InitializeComponent();
         BindingContext = _viewModel = vm;

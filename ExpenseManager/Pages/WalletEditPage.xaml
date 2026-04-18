@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ExpenseManager.ViewModels"
+             x:Class="ExpenseManager.Pages.WalletEditPage"
+             x:DataType="vm:WalletEditViewModel"
+             Title="Wallet Edit Page"
+             IsEnabled="{Binding IsNotBusy}">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="10,20" Spacing="10">
+
+                <Label Text="Wallet Name" />
+                <Entry Placeholder="Enter wallet name"
+                       Text="{Binding Name}" />
+                <Label Text="{Binding Errors[Name]}"
+                       TextColor="Red"
+                       IsVisible="{Binding Errors[Name], Converter={StaticResource StringToBoolConverter}}" />
+
+                <Label Text="Currency" />
+                <Picker Title="Select wallet currency"
+                        ItemsSource="{Binding Valutas}"
+                        SelectedItem="{Binding Valuta}"
+                        ItemDisplayBinding="{Binding DisplayName}" />
+                <Label Text="{Binding Errors[Valuta]}"
+                       TextColor="Red"
+                       IsVisible="{Binding Errors[Valuta], Converter={StaticResource StringToBoolConverter}}" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Padding="10">
+                    <Button Grid.Column="0"
+                            Text="Save Wallet"
+                            Command="{Binding SaveWalletCommand}" />
+                    <Button Grid.Column="1"
+                            Text="Back"
+                            Command="{Binding BackCommand}" />
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <BoxView IsVisible="{Binding IsBusy}"
+                 BackgroundColor="Gray"
+                 Opacity="0.2"
+                 InputTransparent="False" />
+
+        <ActivityIndicator Color="Magenta"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

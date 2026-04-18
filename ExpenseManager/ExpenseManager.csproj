@@ -77,10 +77,21 @@
 	  <ProjectReference Include="..\ExpenseManager.Repositories\ExpenseManager.Repositories.csproj" />
 	  <ProjectReference Include="..\ExpenseManager.Services\ExpenseManager.Services.csproj" />
 	  <ProjectReference Include="..\ExpenseManager.Storage\ExpenseManager.Storage.csproj" />
-	  <ProjectReference Include="..\ExpenseManager.UIModels\ExpenseManager.UIModels.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\TransactionCreatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\TransactionEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\WalletCreatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\WalletEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Tools\Converters.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

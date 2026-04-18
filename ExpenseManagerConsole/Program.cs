@@ -1,5 +1,8 @@
-﻿using ExpenseManager.Services;
-using ExpenseManager.UIModels;
+﻿using ExpenseManager.DTOModels.Transactions;
+using ExpenseManager.DTOModels.Wallets;
+using ExpenseManager.Repositories;
+using ExpenseManager.Services;
+using ExpenseManager.Storage;
 
 namespace ExpenseManager.ConsoleApp
 {
@@ -14,14 +17,21 @@ namespace ExpenseManager.ConsoleApp
         }
 
         private static AppState _appState = AppState.Default;
-        private static StorageServices _storageService;
-        private static List<WalletUIModel> _wallets;
+        private static IWalletService _walletService;
+        private static ITransactionService _transactionService;
+        private static List<WalletListDTO> _wallets;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         static void Main(string[] args)
         {
             Console.WriteLine("Hello and welcome to the Expense Manager Console App!");
 
-            _storageService = new StorageServices();
+            var storageContext = new InMemoryStorageContext();
+            var walletRepository = new WalletRepository(storageContext);
+            var transactionRepository = new TransactionRepository(storageContext);
+
+            _walletService = new WalletService(walletRepository, transactionRepository);
+            _transactionService = new TransactionService(transactionRepository);
 
             string? command = null;
             while (_appState != AppState.Exit)
@@ -51,11 +61,6 @@ namespace ExpenseManager.ConsoleApp
                     _appState = AppState.Default;
                     break;
 
-                case "Refresh":
-                    _wallets = null;
-                    _appState = AppState.Default;
-                    break;
-
                 case "Exit":
                     _appState = AppState.Exit;
                     Console.WriteLine("Thank you and see you later!");
@@ -78,7 +83,7 @@ namespace ExpenseManager.ConsoleApp
 
         private static void DefaultState()
         {
-            Console.WriteLine("\nHere is the list of all Wallets:");
+            Console.WriteLine("Here is the list of all Wallets:");
             LoadWallets();
 
             foreach (var wallet in _wallets)
@@ -87,8 +92,6 @@ namespace ExpenseManager.ConsoleApp
             }
 
             Console.WriteLine("Type the name of Wallet to see its Transactions.");
-            Console.WriteLine("Example: WalletUAH");
-            Console.WriteLine("Type Refresh to reload wallets.");
         }
 
         private static void LoadWallets()
@@ -96,12 +99,10 @@ namespace ExpenseManager.ConsoleApp
             if (_wallets != null)
                 return;
 
-            _wallets = new List<WalletUIModel>();
-
-            foreach (var walletDb in _storageService.GetAllWallets())
+            _wallets = new List<WalletListDTO>();
+            foreach (var wallet in _walletService.GetAllWallets())
             {
-               // var walletUi = new WalletUIModel(walletDb);
-                //_wallets.Add(walletUi);
+                _wallets.Add(wallet);
             }
         }
 
@@ -114,23 +115,11 @@ namespace ExpenseManager.ConsoleApp
                 if (wallet.Name == walletName)
                 {
                     walletExists = true;
-
-                    Console.WriteLine();
-                    Console.WriteLine(wallet);
-
-                    wallet.LoadTransactions();
-
                     Console.WriteLine($"Transactions in {wallet.Name}:");
-                    if (wallet.Transactions.Count == 0)
+
+                    foreach (var transaction in _transactionService.GetTransactionsByWalletId(wallet.Id))
                     {
-                        Console.WriteLine("(no transactions)");
-                    }
-                    else
-                    {
-                        foreach (var tx in wallet.Transactions)
-                        {
-                            Console.WriteLine(tx);
-                        }
+                        Console.WriteLine(transaction);
                     }
                 }
             }

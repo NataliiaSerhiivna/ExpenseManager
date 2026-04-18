@@ -10,15 +10,15 @@ namespace ExpenseManager.DBModels
     public class TransactionDBModel
     {
         //The identifier is immutable after the object is created
-        public Guid Id { get; }
+        public Guid Id { get; set; }
         //The transaction belongs to one specific wallet
-        public Guid WalletId { get; }
+        public Guid WalletId { get; set; }
         public decimal Amount { get; set; }
         public Category Category { get; set; }
         public string Description { get; set; }
         // Timestamp is set only once during the creation of the object and cannot be changed later.
         public DateTime Timestamp { get; set; }
-        private TransactionDBModel()
+        public TransactionDBModel()
         {
         }
         public TransactionDBModel(Guid walletId, decimal amount, Category category, string description, DateTime timestamp): this(Guid.NewGuid(), walletId, amount, category, description, timestamp){}
@@ -31,14 +31,5 @@ namespace ExpenseManager.DBModels
             Description = description;
             Timestamp = timestamp;
         }
-        /**public TransactionDBModel(Guid walletId, decimal amount, Category category, string description, DateTime timestamp)
-        {
-            Id = Guid.NewGuid();
-            WalletId = walletId;
-            Amount = amount;
-            Category = category;
-            Description = description ?? "";
-            Timestamp = timestamp;
-        }*/
     }
 }

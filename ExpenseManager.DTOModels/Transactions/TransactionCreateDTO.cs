@@ -2,26 +2,26 @@
 
 namespace ExpenseManager.DTOModels.Transactions
 {
-    public class TransactionListDTO
+    public class TransactionCreateDTO
     {
-        public Guid Id { get; }
+        public Guid WalletId { get; }
+
         public Category Category { get; }
+
         public decimal Amount { get; }
         public string Description { get; }
+
         public DateTime Timestamp { get; }
 
-        public TransactionListDTO(
-            Guid id,
-            Category category,
-            decimal amount,
-            string description,
-            DateTime timestamp)
+
+        public TransactionCreateDTO(Guid walletId, Category category, decimal amount, string description, DateTime timestamp)
         {
-            Id = id;
+            WalletId = walletId;
             Category = category;
             Amount = amount;
             Description = description;
             Timestamp = timestamp;
+
         }
     }
 }

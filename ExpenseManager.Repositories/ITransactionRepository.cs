@@ -1,12 +1,17 @@
 ﻿using ExpenseManager.DBModels;
-using System;
-using System.Collections.Generic;
 
 namespace ExpenseManager.Repositories
 {
     public interface ITransactionRepository
     {
-        IEnumerable<TransactionDBModel> GetTransactionsByWalletId(Guid walletId);
-        int GetTransactionsCountByWalletId(Guid walletId);
+        Task<IEnumerable<TransactionDBModel>> GetTransactionsByWalletAsync(Guid walletId);
+
+        Task<TransactionDBModel?> GetTransactionAsync(Guid transactionId);
+
+        Task<int> GetTransactionsCountByWalletAsync(Guid walletId);
+
+        Task SaveTransactionAsync(TransactionDBModel transaction);
+
+        Task DeleteTransactionAsync(Guid transactionId);
     }
 }

@@ -10,12 +10,10 @@
     <BuildDependency Project="ExpenseManager.Common/ExpenseManager.Common.csproj" />
   </Project>
   <Project Path="ExpenseManager.Storage/ExpenseManager.Storage.csproj" Id="949426f6-7417-4e50-a2cf-a4c0487c5900" />
-  <Project Path="ExpenseManager.UIModels/ExpenseManager.UIModels.csproj" />
   <Project Path="ExpenseManager/ExpenseManager.csproj">
     <BuildDependency Project="ExpenseManager.Common/ExpenseManager.Common.csproj" />
     <BuildDependency Project="ExpenseManager.DBModels/ExpenseManager.DBModels.csproj" />
     <BuildDependency Project="ExpenseManager.Services/ExpenseManager.Services.csproj" />
-    <BuildDependency Project="ExpenseManager.UIModels/ExpenseManager.UIModels.csproj" />
     <Deploy Solution="Debug|*" />
   </Project>
   <Project Path="ExpenseManagerConsole/ExpenseManagerConsole.csproj" />

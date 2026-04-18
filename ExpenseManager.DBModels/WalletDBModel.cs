@@ -10,10 +10,10 @@ namespace ExpenseManager.DBModels
     public class WalletDBModel
     {
         //The identifier is immutable after the object is created.
-        public Guid Id { get; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public Valuta Valuta { get; set; }
-        private WalletDBModel() { }
+        public WalletDBModel() { }
 
         public WalletDBModel(string name, Valuta valuta): this(Guid.NewGuid(), name, valuta){}
         public WalletDBModel(Guid id, string name, Valuta valuta)

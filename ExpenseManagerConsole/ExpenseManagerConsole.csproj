@@ -8,8 +8,4 @@
     <RootNamespace>ExpenseManagerConsole</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ExpenseManager.UIModels\ExpenseManager.UIModels.csproj" />
-  </ItemGroup>
-
 </Project>

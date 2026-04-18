@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:ExpenseManager.ViewModels"
+             x:Class="ExpenseManager.Pages.TransactionCreatePage"
+             x:DataType="vms:TransactionCreateViewModel"
+             Title="Transaction Create Page"
+             IsEnabled="{Binding IsNotBusy}">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="10,20"
+                Spacing="10">
+
+                <Label Text="Category" />
+                <Picker
+                    Title="Select transaction category"
+                    ItemsSource="{Binding Categories}"
+                    SelectedItem="{Binding Category}" 
+					ItemDisplayBinding="{Binding DisplayName}"/>
+                <Label
+                    Text="{Binding Errors[Category]}"
+                    TextColor="Red"
+                    IsVisible="{Binding Errors[Category], Converter={StaticResource StringToBoolConverter}}" />
+
+                <Label Text="Amount" />
+                <Entry
+                    Placeholder="Enter amount"
+                    Text="{Binding Amount}" 
+                    Keyboard="Numeric" />
+                <Label
+                    Text="{Binding Errors[Amount]}"
+                    TextColor="Red"
+                    IsVisible="{Binding Errors[Amount], Converter={StaticResource StringToBoolConverter}}" />
+
+                <Label Text="Date" />
+                <DatePicker Date="{Binding Date}" />
+                <Label
+                    Text="{Binding Errors[Date]}"
+                    TextColor="Red"
+                    IsVisible="{Binding Errors[Date], Converter={StaticResource StringToBoolConverter}}" />
+
+                <Label Text="Description" />
+                <Editor
+                    Placeholder="Enter transaction description"
+                    Text="{Binding Description}"
+                    AutoSize="TextChanges" />
+                <Label
+                    Text="{Binding Errors[Description]}"
+                    TextColor="Red"
+                    IsVisible="{Binding Errors[Description], Converter={StaticResource StringToBoolConverter}}" />
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10"
+                    Padding="10">
+                    <Button
+                        Grid.Column="0"
+                        Text="Create Transaction"
+                        Command="{Binding CreateTransactionCommand}" />
+                    <Button
+                        Grid.Column="1"
+                        Text="Back"
+                        Command="{Binding BackCommand}" />
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <BoxView
+            IsVisible="{Binding IsBusy}"
+            BackgroundColor="Gray"
+            Opacity="0.2"
+            InputTransparent="False" />
+
+        <ActivityIndicator
+            Color="Magenta"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

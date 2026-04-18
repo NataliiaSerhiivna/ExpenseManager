@@ -5,11 +5,13 @@
              xmlns:vm="clr-namespace:ExpenseManager.ViewModels"
              x:Class="ExpenseManager.Pages.WalletDetailsPage"
              x:DataType="vm:WalletDetailsViewModel"
-             Title="Wallet Details">
+             Title="Wallet Details"
+             IsEnabled="{Binding IsNotBusy}">
 
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
 
-        <Border Stroke="#7E57C2"
+        <Border Grid.Row="0"
+                Stroke="#7E57C2"
                 StrokeThickness="2"
                 StrokeShape="RoundRectangle 12"
                 BackgroundColor="#F3E8FF"
@@ -17,63 +19,145 @@
                 Margin="10,10,10,0">
 
             <VerticalStackLayout>
-                <Label FontSize="18"
+                <Label Text="{Binding CurrentWallet.Name}"
+                       FontSize="18"
                        FontAttributes="Bold"
                        TextColor="#2E1F5E"
-                       HorizontalOptions="Center"
-                       Text="{Binding CurrentWallet.Name}" />
+                       HorizontalOptions="Center" />
 
                 <Label Text="{Binding CurrentWallet.Valuta, Converter={StaticResource EnumToDisplayName}}"
                        HorizontalOptions="Center"
                        TextColor="#4B3A78" />
+
+                <Label Text="{Binding TotalAmount, StringFormat='Balance: {0:F2}'}"
+                       HorizontalOptions="Center"
+                       TextColor="#4B3A78" />
+
+                <Grid ColumnDefinitions="*,*"
+                      ColumnSpacing="10"
+                      Margin="0,10,0,0">
+                    <Button Grid.Column="0"
+                            Text="Edit Wallet"
+                            Command="{Binding EditWalletCommand}" />
+
+                    <Button Grid.Column="1"
+                            Text="Delete Wallet"
+                            Command="{Binding DeleteWalletCommand}"
+                            BackgroundColor="Red"
+                            TextColor="White" />
+                </Grid>
             </VerticalStackLayout>
         </Border>
 
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Transactions}"
-                        Margin="10"
-                        SelectionMode="None">
+        <VerticalStackLayout Grid.Row="1"
+                             Padding="10"
+                             Spacing="10">
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="dto:TransactionListDTO">
-                    <Border Stroke="#4AA3FF"
-                            StrokeThickness="2"
-                            StrokeShape="RoundRectangle 12"
-                            BackgroundColor="#EAF4FF"
-                            Padding="12"
-                            Margin="0,10">
+            <SearchBar Placeholder="Search transactions"
+                       Text="{Binding TransactionSearchText}" />
 
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WalletDetailsViewModel}}, Path=LoadTransactionCommand}"
-                                CommandParameter="{Binding Id}" />
-                        </Border.GestureRecognizers>
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10">
+                <Picker Grid.Column="0"
+                        Title="Filter by category"
+                        ItemsSource="{Binding CategoryFilters}"
+                        SelectedItem="{Binding SelectedCategoryFilter}" />
 
-                        <VerticalStackLayout>
-                            <Label FontSize="18"
-                                   FontAttributes="Bold"
-                                   TextColor="Black"
-                                   HorizontalOptions="Center">
-                                <Label.Text>
-                                    <MultiBinding StringFormat="{}{0} ({1})">
-                                        <Binding Path="Description" />
-                                        <Binding Path="Amount" />
-                                    </MultiBinding>
-                                </Label.Text>
-                            </Label>
+                <Picker Grid.Column="1"
+                        Title="Sort transactions"
+                        ItemsSource="{Binding TransactionSortOptions}"
+                        SelectedItem="{Binding SelectedTransactionSortOption}" />
+            </Grid>
+        </VerticalStackLayout>
 
-                            <Label Text="{Binding Category, Converter={StaticResource EnumToDisplayName}}"
-                                   HorizontalOptions="Center"
-                                   TextColor="#1E3A5F" />
+        <Border Grid.Row="2"
+                Stroke="#4AA3FF"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="#EAF4FF"
+                Padding="10"
+                Margin="10,0,10,0">
 
-                            <Label Text="{Binding Timestamp, StringFormat='{0:dd.MM.yyyy HH:mm}'}"
-                                   HorizontalOptions="Center"
-                                   TextColor="#4A6078"
-                                   FontSize="13" />
-                        </VerticalStackLayout>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            <RefreshView Command="{Binding RefreshDataCommand}">
+                <CollectionView ItemsSource="{Binding Transactions}"
+                                SelectionMode="None">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dto:TransactionListDTO">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem Text="Delete"
+                                                   BackgroundColor="Red"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WalletDetailsViewModel}}, Path=DeleteTransactionCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Stroke="#4AA3FF"
+                                        StrokeThickness="2"
+                                        StrokeShape="RoundRectangle 12"
+                                        BackgroundColor="#EAF4FF"
+                                        Padding="12"
+                                        Margin="0,10">
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WalletDetailsViewModel}}, Path=LoadTransactionCommand}"
+                                            CommandParameter="{Binding Id}" />
+                                    </Border.GestureRecognizers>
+
+                                    <VerticalStackLayout>
+                                        <Label FontSize="18"
+                                               FontAttributes="Bold"
+                                               TextColor="Black"
+                                               HorizontalOptions="Center">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} ({1})">
+                                                    <Binding Path="Category" Converter="{StaticResource EnumToDisplayName}" />
+                                                    <Binding Path="Amount" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+
+                                        <Label Text="{Binding Description}"
+                                               HorizontalOptions="Center"
+                                               TextColor="#1E3A5F" />
+
+                                        <Label Text="{Binding Timestamp, StringFormat='{0:dd.MM.yyyy HH:mm}'}"
+                                               HorizontalOptions="Center"
+                                               TextColor="#4A6078"
+                                               FontSize="13" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        </Border>
+
+        <Button Grid.Row="3"
+                Command="{Binding AddTransactionCommand}"
+                Text="Create new Transaction"
+                Margin="10"
+                HorizontalOptions="Center"
+                BackgroundColor="#7E57C2"
+                TextColor="White"
+                CornerRadius="12"
+                Padding="16,10" />
+
+        <BoxView IsVisible="{Binding IsBusy}"
+                 BackgroundColor="Gray"
+                 Opacity="0.2"
+                 InputTransparent="False"
+                 Grid.RowSpan="4" />
+
+        <ActivityIndicator Color="Magenta"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Grid.RowSpan="4" />
     </Grid>
 </ContentPage>

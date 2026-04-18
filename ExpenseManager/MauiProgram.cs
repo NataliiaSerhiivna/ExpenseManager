@@ -24,7 +24,7 @@ namespace ExpenseManager
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            builder.Services.AddSingleton<IStorageContext, InMemoryStorageContext>();
+            builder.Services.AddSingleton<IStorageContext, FileStorageContext>();
 
             builder.Services.AddSingleton<IWalletRepository, WalletRepository>();
             builder.Services.AddSingleton<ITransactionRepository, TransactionRepository>();
@@ -34,10 +34,21 @@ namespace ExpenseManager
 
             builder.Services.AddTransient<WalletsViewModel>();
             builder.Services.AddTransient<WalletDetailsViewModel>();
+            builder.Services.AddTransient<TransactionDetailsViewModel>();
+            builder.Services.AddTransient<TransactionCreateViewModel>();
 
-            builder.Services.AddSingleton<WalletsPage>();
+            builder.Services.AddTransient<WalletsPage>();
             builder.Services.AddTransient<WalletDetailsPage>();
             builder.Services.AddTransient<TransactionDetailsPage>();
+            builder.Services.AddTransient<TransactionCreatePage>();
+            builder.Services.AddTransient<TransactionEditViewModel>();
+            builder.Services.AddTransient<TransactionEditPage>();
+
+
+            builder.Services.AddTransient<WalletCreateViewModel>();
+            builder.Services.AddTransient<WalletEditViewModel>();
+            builder.Services.AddTransient<WalletCreatePage>();
+            builder.Services.AddTransient<WalletEditPage>();
 
             return builder.Build();
         }

@@ -6,7 +6,10 @@ namespace ExpenseManager.Services
 {
     public interface IWalletService
     {
-        IEnumerable<WalletListDTO> GetAllWallets();
-        WalletDetailsDTO GetWallet(Guid walletId);
+        IAsyncEnumerable<WalletListDTO> GetAllWalletsAsync();
+        Task<WalletDetailsDTO?> GetWalletAsync(Guid walletId);
+        Task CreateWalletAsync(WalletCreateDTO walletCreateDTO);
+        Task UpdateWalletAsync(WalletEditDTO walletEditDTO);
+        Task DeleteWalletAsync(Guid walletId);
     }
 }

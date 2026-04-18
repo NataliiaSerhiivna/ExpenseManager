@@ -1,12 +1,20 @@
-﻿using ExpenseManager.DTOModels.Transactions;
+﻿using ExpenseManager.ViewModels;
 
 namespace ExpenseManager.Pages;
 
 public partial class TransactionDetailsPage : ContentPage
 {
-    public TransactionDetailsPage(TransactionListDTO transaction)
+    private readonly TransactionDetailsViewModel _viewModel;
+
+    public TransactionDetailsPage(TransactionDetailsViewModel vm)
     {
         InitializeComponent();
-        BindingContext = transaction;
+        BindingContext = _viewModel = vm;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.RefreshData();
     }
 }

@@ -1,26 +1,63 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:dto="clr-namespace:ExpenseManager.DTOModels.Transactions;assembly=ExpenseManager.DTOModels"
+             xmlns:vms="clr-namespace:ExpenseManager.ViewModels"
              x:Class="ExpenseManager.Pages.TransactionDetailsPage"
-             x:DataType="dto:TransactionListDTO"
-             Title="Transaction Details">
+             x:DataType="vms:TransactionDetailsViewModel"
+             Title="Transaction Details"
+             IsEnabled="{Binding IsNotBusy}">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="10,20" Spacing="10">
+    <Grid RowDefinitions="*,Auto">
 
-            <Label Text="Amount" FontAttributes="Bold" />
-            <Label Text="{Binding Amount}" Margin="10,0" />
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="10,20" Spacing="10">
 
-            <Label Text="Category" FontAttributes="Bold"/>
-            <Label Text="{Binding Category, Converter={StaticResource EnumToDisplayName}}" Margin="10,0" />
+                <Label Text="Amount" FontAttributes="Bold" />
+                <Label Text="{Binding Amount}" Margin="10,0" />
 
-            <Label Text="Description" FontAttributes="Bold"/>
-            <Label Text="{Binding Description}" Margin="10,0" />
+                <Label Text="Category" FontAttributes="Bold" />
+                <Label Text="{Binding Category, Converter={StaticResource EnumToDisplayName}}" Margin="10,0" />
 
-            <Label Text="Timestamp" FontAttributes="Bold"/>
-            <Label Text="{Binding Timestamp, StringFormat='{0:dd.MM.yyyy HH:mm}'}" Margin="10,0" />
+                <Label Text="Description" FontAttributes="Bold" />
+                <Label Text="{Binding Description}" Margin="10,0" />
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <Label Text="Timestamp" FontAttributes="Bold" />
+                <Label Text="{Binding Timestamp, StringFormat='{0:dd.MM.yyyy HH:mm}'}" Margin="10,0" />
+
+                <Label Text="Is Expense" FontAttributes="Bold" />
+                <Label Text="{Binding ExpenseStatus}" Margin="10,0" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*,*"
+              ColumnSpacing="10"
+              Padding="10">
+            <Button Grid.Column="0"
+                    Text="Edit"
+                    Command="{Binding EditTransactionCommand}" />
+            <Button Grid.Column="1"
+                    Text="Delete"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    Command="{Binding DeleteTransactionCommand}" />
+            <Button Grid.Column="2"
+                    Text="Back"
+                    Command="{Binding BackCommand}" />
+        </Grid>
+
+        <BoxView IsVisible="{Binding IsBusy}"
+                 BackgroundColor="Gray"
+                 Opacity="0.2"
+                 InputTransparent="False"
+                 Grid.RowSpan="2" />
+
+        <ActivityIndicator Color="Magenta"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Grid.RowSpan="2" />
+    </Grid>
 </ContentPage>

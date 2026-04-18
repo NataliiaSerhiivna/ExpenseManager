@@ -6,10 +6,17 @@ namespace ExpenseManager.Storage
 {
     public interface IStorageContext
     {
-        IEnumerable<WalletDBModel> GetWallets();
-        WalletDBModel GetWallet(Guid walletId);
-        IEnumerable<TransactionDBModel> GetTransactionsByWalletId(Guid walletId);
-        int GetTransactionsCountByWalletId(Guid walletId);
-        TransactionDBModel GetTransaction(Guid transactionId);
+        IAsyncEnumerable<WalletDBModel> GetWalletsAsync();
+        Task<WalletDBModel?> GetWalletAsync(Guid walletId);
+
+        Task<IEnumerable<TransactionDBModel>> GetTransactionsByWalletAsync(Guid walletId);
+        Task<TransactionDBModel?> GetTransactionAsync(Guid transactionId);
+        Task<int> GetTransactionsCountByWalletAsync(Guid walletId);
+
+        Task SaveWalletAsync(WalletDBModel wallet);
+        Task DeleteWalletAsync(Guid walletId);
+
+        Task SaveTransactionAsync(TransactionDBModel transaction);
+        Task DeleteTransactionAsync(Guid transactionId);
     }
 }

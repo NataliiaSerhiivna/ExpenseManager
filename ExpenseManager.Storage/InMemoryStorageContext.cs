@@ -1,7 +1,5 @@
 ﻿using ExpenseManager.Common.Enums;
 using ExpenseManager.DBModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ExpenseManager.Storage
@@ -17,7 +15,6 @@ namespace ExpenseManager.Storage
         static InMemoryStorageContext()
         {
             #region MockStoragePopulation
-
             var cashWallet = new WalletRecord(Guid.NewGuid(), "Cash", Valuta.UAH);
             var monobankWallet = new WalletRecord(Guid.NewGuid(), "Monobank", Valuta.UAH);
             var paypalWallet = new WalletRecord(Guid.NewGuid(), "PayPal", Valuta.USD);
@@ -38,57 +35,117 @@ namespace ExpenseManager.Storage
             _transactions.Add(new TransactionRecord(Guid.NewGuid(), monobankWallet.Id, -500m, Category.Products, "Household goods", new DateTime(2026, 1, 14, 20, 0, 0)));
             _transactions.Add(new TransactionRecord(Guid.NewGuid(), cashWallet.Id, 2000m, Category.Products, "Freelance payment", new DateTime(2026, 1, 15, 14, 0, 0)));
             _transactions.Add(new TransactionRecord(Guid.NewGuid(), cashWallet.Id, -150m, Category.Home, "Hosting payment", new DateTime(2026, 1, 16, 9, 30, 0)));
-            _transactions.Add(new TransactionRecord(Guid.NewGuid(), paypalWallet.Id, -300m, Category.Health, "Pharmacy", new DateTime(2026, 1, 9, 16, 20, 0)));
             #endregion
         }
 
-        public IEnumerable<WalletDBModel> GetWallets()
+        public async IAsyncEnumerable<WalletDBModel> GetWalletsAsync()
         {
             foreach (var wallet in _wallets)
             {
+                await Task.Delay(1000);
                 yield return new WalletDBModel(wallet.Id, wallet.Name, wallet.Valuta);
             }
         }
 
-        public WalletDBModel GetWallet(Guid walletId)
+        public Task<WalletDBModel?> GetWalletAsync(Guid walletId)
         {
-            var wallet = _wallets.FirstOrDefault(wallet => wallet.Id == walletId);
-            return wallet is null
-                ? null
-                : new WalletDBModel(wallet.Id, wallet.Name, wallet.Valuta);
+            return Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+                var wallet = _wallets.FirstOrDefault(w => w.Id == walletId);
+                return wallet is null ? null : new WalletDBModel(wallet.Id, wallet.Name, wallet.Valuta);
+            });
         }
 
-        public IEnumerable<TransactionDBModel> GetTransactionsByWalletId(Guid walletId)
+        public Task<IEnumerable<TransactionDBModel>> GetTransactionsByWalletAsync(Guid walletId)
         {
-            return _transactions
-                .Where(transaction => transaction.WalletId == walletId)
-                .Select(transaction => new TransactionDBModel(
+            return Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+                return _transactions
+                    .Where(t => t.WalletId == walletId)
+                    .Select(t => new TransactionDBModel(
+                        t.Id,
+                        t.WalletId,
+                        t.Amount,
+                        t.Category,
+                        t.Description,
+                        t.Timestamp));
+            });
+        }
+
+        public Task<TransactionDBModel?> GetTransactionAsync(Guid transactionId)
+        {
+            return Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+                var transaction = _transactions.FirstOrDefault(t => t.Id == transactionId);
+                return transaction is null
+                    ? null
+                    : new TransactionDBModel(
+                        transaction.Id,
+                        transaction.WalletId,
+                        transaction.Amount,
+                        transaction.Category,
+                        transaction.Description,
+                        transaction.Timestamp);
+            });
+        }
+
+        public Task<int> GetTransactionsCountByWalletAsync(Guid walletId)
+        {
+            return Task.Run(() =>
+            {
+                Thread.Sleep(500);
+                return _transactions.Count(t => t.WalletId == walletId);
+            });
+        }
+
+        public Task SaveWalletAsync(WalletDBModel wallet)
+        {
+            return Task.Run(() =>
+            {
+                var existing = _wallets.FirstOrDefault(w => w.Id == wallet.Id);
+                if (existing is not null)
+                    _wallets.Remove(existing);
+
+                _wallets.Add(new WalletRecord(wallet.Id, wallet.Name, wallet.Valuta));
+            });
+        }
+
+        public Task DeleteWalletAsync(Guid walletId)
+        {
+            return Task.Run(() =>
+            {
+                _wallets.RemoveAll(w => w.Id == walletId);
+                _transactions.RemoveAll(t => t.WalletId == walletId);
+            });
+        }
+
+        public Task SaveTransactionAsync(TransactionDBModel transaction)
+        {
+            return Task.Run(() =>
+            {
+                var existing = _transactions.FirstOrDefault(t => t.Id == transaction.Id);
+                if (existing is not null)
+                    _transactions.Remove(existing);
+
+                _transactions.Add(new TransactionRecord(
                     transaction.Id,
                     transaction.WalletId,
                     transaction.Amount,
                     transaction.Category,
                     transaction.Description,
                     transaction.Timestamp));
-        }
-        public TransactionDBModel GetTransaction(Guid transactionId)
-        {
-            var transaction = _transactions.FirstOrDefault(t => t.Id == transactionId);
-
-            return transaction is null
-                ? null
-                : new TransactionDBModel(
-                    transaction.Id,
-                    transaction.WalletId,
-                    transaction.Amount,
-                    transaction.Category,
-                    transaction.Description,
-                    transaction.Timestamp
-                );
+            });
         }
 
-        public int GetTransactionsCountByWalletId(Guid walletId)
+        public Task DeleteTransactionAsync(Guid transactionId)
         {
-            return _transactions.Count(transaction => transaction.WalletId == walletId);
+            return Task.Run(() =>
+            {
+                _transactions.RemoveAll(t => t.Id == transactionId);
+            });
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using ExpenseManager.DBModels;
 using ExpenseManager.Storage;
-using System;
-using System.Collections.Generic;
 
 namespace ExpenseManager.Repositories
 {
@@ -14,14 +12,24 @@ namespace ExpenseManager.Repositories
             _storageContext = storageContext;
         }
 
-        public IEnumerable<WalletDBModel> GetWallets()
+        public IAsyncEnumerable<WalletDBModel> GetWalletsAsync()
         {
-            return _storageContext.GetWallets();
+            return _storageContext.GetWalletsAsync();
         }
 
-        public WalletDBModel GetWallet(Guid walletId)
+        public Task<WalletDBModel?> GetWalletAsync(Guid walletId)
         {
-            return _storageContext.GetWallet(walletId);
+            return _storageContext.GetWalletAsync(walletId);
+        }
+
+        public Task SaveWalletAsync(WalletDBModel wallet)
+        {
+            return _storageContext.SaveWalletAsync(wallet);
+        }
+
+        public Task DeleteWalletAsync(Guid walletId)
+        {
+            return _storageContext.DeleteWalletAsync(walletId);
         }
     }
 }
